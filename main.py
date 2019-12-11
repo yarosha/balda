@@ -30,6 +30,7 @@ class MyApp(App):
         self.used = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
         self.prevx = 0
         self.prevy = 0
+        self.fail = 0
         for i in range(49):
             if (int(i / 7) == 3):
                 gl.add_widget(Button(on_press=self.callback_press, font_size=90, text=start[i % 7]))
@@ -70,19 +71,22 @@ class MyApp(App):
         print(x, y)
         print(self.field)
         if (instance.text == ""):
-            if (self.prev == 0):
-                return "sexy_olya"
+            print("olik", self.fail)
+            if (self.prev == 0 or (self.fail == 1 and self.word == "")):
+                return "some_string"
+            self.used = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
             print(self.word)
             if (self.check_function(self.word)) and (self.word not in self.done):
-                self.used = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
                 self.done.add(self.word)
                 print(self.done)
                 self.points[self.turn] += self.check_function(self.word)
                 self.turn = (self.turn + 1) % 2
+                self.fail = 0
             else:
+                self.fail = 1
                 if (len(self.word) != 0):
                     self.word = ""
-                    return "sexy_olya"
+                    return "some_string"
                 self.word = ""
             fl = False
             for i in range(4):
@@ -93,10 +97,10 @@ class MyApp(App):
                     if (self.field[nx][ny]):
                         fl = True
             if (not fl):
-                return "sexy_olya"
+                return "some_string"
             process = Popen(['python3', 'keyboard.py'], preexec_fn=None)
             sleep(5)
-            f = open("sexy_olya.txt", "r")
+            f = open("some_string.txt", "r")
             letter = f.read()
             self.field[x][y] = 1
             instance.text = letter
@@ -105,7 +109,7 @@ class MyApp(App):
             self.prev = 0
         else:
             if (self.used[x][y] != 0):
-                return "sexy_olya"
+                return "some_string"
             
             fl = False
             for i in range(4):
@@ -116,7 +120,7 @@ class MyApp(App):
                     if (nx == self.prevx and ny == self.prevy):
                         fl = True
             if ((not fl) and (len(self.word)) != 0):
-                return "sexy_olya"
+                return "some_string"
             self.word += instance.text
             self.prev = 1
             self.prevx = x

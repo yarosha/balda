@@ -30,7 +30,7 @@ class MyApp(App):
         print(x, y)
         print(self.govno[2 - x][y])
         print(self.field)
-        f = open("sexy_olya.txt", "w")
+        f = open("some_string.txt", "w")
         f.write(self.govno[2 - x][y]);
         
 '''return Button(
